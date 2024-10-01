@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { KeysModule } from './keys/keys.module';
 import { KeysService } from './keys/keys.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { KeysService } from './keys/keys.service';
       },
     }),
     KeysModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
