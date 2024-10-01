@@ -7,6 +7,6 @@ export class AppController {
 
   @Get()
   public getHealthy(): string {
-    return this.getHealthy();
+    return this.appService.getHealthy();
   }
 }
