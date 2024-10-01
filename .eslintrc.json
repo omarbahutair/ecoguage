@@ -10,5 +10,10 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react", "prettier"],
-  "rules": {}
+  "rules": {
+    "import/prefer-default-export": "off",
+    "class-methods-use-this": "off",
+    "@typescript-eslint/explicit-member-accessibility": "error"
+  },
+  "ignorePatterns": ["packages/backend/dist/*", "packages/web/vite.config.ts"]
 }
