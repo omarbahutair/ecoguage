@@ -1,15 +1,15 @@
 import { IsEmail, IsString, IsStrongPassword } from 'class-validator';
 
 export class RegisterDto {
-  @IsEmail()
+  @IsEmail({}, { message: 'Invalid email' })
   public email: string;
 
-  @IsStrongPassword()
+  @IsStrongPassword({}, { message: 'Weak password' })
   public password: string;
 
-  @IsString()
+  @IsString({ message: 'Invalid first name' })
   public firstName: string;
 
-  @IsString()
+  @IsString({ message: 'Invalid last name' })
   public lastName: string;
 }
