@@ -1,9 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dtos/register.dto';
+import { LoginDto } from './dtos/login.dto';
 
 const scrypt = promisify(_scrypt);
 
@@ -35,7 +40,28 @@ export class AuthService {
     };
   }
 
-  public static async hashPassword(
+  public async login(loginUser: LoginDto): Promise<JwtResponse> {
+    // 1) check if user exists
+    const user = await this.usersService.findByEmail(loginUser.email);
+
+    if (!user) throw new UnauthorizedException('Invalid credentials');
+
+    const [, salt] = user.password.split('.');
+
+    const insertedHashedPassword = await AuthService.hashPassword(
+      loginUser.password,
+      salt,
+    );
+
+    if (insertedHashedPassword !== user.password)
+      throw new UnauthorizedException('Invalid credentials');
+
+    return {
+      accessToken: this.generateJwt({ sub: user._id.toString() }),
+    };
+  }
+
+  private static async hashPassword(
     password: string,
     salt?: string,
   ): Promise<string> {
