@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -8,6 +8,21 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      exceptionFactory(errors) {
+        const validationErrors: Record<string, string[]> = {};
+
+        for (let i = 0; i < errors.length; i += 1) {
+          const error = errors[i];
+
+          validationErrors[error.property] = Object.values(error.constraints);
+        }
+
+        return new UnprocessableEntityException({
+          statusCode: 422,
+          error: 'Unprocessable entity',
+          validationErrors,
+        });
+      },
     }),
   );
 
