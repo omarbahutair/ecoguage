@@ -1,4 +1,5 @@
 @url=http://localhost:5000
+@auth=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NmZjZWQ1M2ViOWMyNWJiMzliZTczZDgiLCJpYXQiOjE3Mjc4NTI2MzMsImV4cCI6MTczMDQ0NDYzM30.UDNm2e162GbVjEP1McdHwMxIWP5uJ5DqA7_hFaXsskc
 
 ###
 POST {{url}}/auth/register
@@ -19,3 +20,7 @@ Content-Type: application/json
   "email": "o.bahutair@gmail.com",
   "password": "newPassword123!"
 }
+
+###
+GET {{url}}/auth/whoami
+Authorization: {{auth}}

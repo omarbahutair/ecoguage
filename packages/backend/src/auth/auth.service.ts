@@ -78,7 +78,7 @@ export class AuthService {
     return seq;
   }
 
-  public generateJwt(payload: { sub: string }): string {
+  public generateJwt(payload: JwtPayload): string {
     return this.jwtService.sign(payload);
   }
 }
