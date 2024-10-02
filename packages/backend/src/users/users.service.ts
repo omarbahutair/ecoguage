@@ -19,6 +19,10 @@ export class UsersService {
     return this.userModel.findById(id);
   }
 
+  public findByEmail(email: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ email });
+  }
+
   public update(id: string, user: User): Promise<UserDocument | null> {
     if (!isValidObjectId(id)) return null;
 
