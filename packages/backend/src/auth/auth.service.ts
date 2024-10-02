@@ -1,19 +1,22 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { UserDocument } from 'src/users/user.schema';
 import { scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
+import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dtos/register.dto';
 
 const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class AuthService {
-  public constructor(private readonly usersService: UsersService) {}
+  public constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  public async register(registerUser: RegisterDto): Promise<UserDocument> {
+  public async register(registerUser: RegisterDto): Promise<JwtResponse> {
     // 1) check email is not used
-    const isEmailUsed = this.usersService.findByEmail(registerUser.email);
+    const isEmailUsed = await this.usersService.findByEmail(registerUser.email);
 
     if (isEmailUsed) throw new BadRequestException('Email is already used');
 
@@ -22,19 +25,23 @@ export class AuthService {
       registerUser.password,
     );
 
-    return this.usersService.create({
+    const registeredUser = await this.usersService.create({
       ...registerUser,
       password: hashedPassword,
     });
+
+    return {
+      accessToken: this.generateJwt({ sub: registeredUser._id.toString() }),
+    };
   }
 
   public static async hashPassword(
     password: string,
     salt?: string,
   ): Promise<string> {
-    const hash = (await scrypt(password, salt, 32)) as Buffer;
-
     salt = salt ?? this.generateStringSequence();
+
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
 
     return `${hash.toString('hex')}.${salt}`;
   }
@@ -43,5 +50,9 @@ export class AuthService {
     const seq = Math.random().toString().split('.')[1].substring(0, length);
 
     return seq;
+  }
+
+  public generateJwt(payload: { sub: string }): string {
+    return this.jwtService.sign(payload);
   }
 }

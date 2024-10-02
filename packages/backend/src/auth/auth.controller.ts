@@ -8,7 +8,7 @@ export class AuthController {
   public constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  public create(@Body() registerUser: RegisterDto): Promise<UserDocument> {
+  public create(@Body() registerUser: RegisterDto): Promise<JwtResponse> {
     return this.authService.register(registerUser);
   }
 }
