@@ -31,7 +31,11 @@ export default function Input({
 
   return (
     <div className={`${className ?? ''} flex flex-col gap-1`}>
-      {label && <label className="text-primary font-semibold">{label}</label>}
+      {label && (
+        <label tabIndex={-1} className="text-primary font-semibold">
+          {label}
+        </label>
+      )}
       <div className="flex rounded-lg shadow border border-transparent focus:border-primary bg-white">
         <input
           className="px-5 py-3 outline-none w-full"
@@ -44,6 +48,7 @@ export default function Input({
         />
         {type === 'password' ? (
           <button
+            tabIndex={-1}
             type="button"
             className="w-12"
             onClick={() => {
@@ -54,7 +59,9 @@ export default function Input({
           </button>
         ) : null}
       </div>
-      <p className="text-sm text-red-500">{error}</p>
+      <p tabIndex={-1} className="text-sm text-red-500">
+        {error}
+      </p>
     </div>
   );
 }
