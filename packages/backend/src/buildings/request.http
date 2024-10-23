@@ -29,5 +29,13 @@ Authorization: {{auth}}
 Content-Type: application/json
 
 {
-  "name": "House"
+  "name": "Apartment 1"
 }
+
+### Get buildings
+GET {{url}}/buildings?pageSize=1&page=3
+Authorization: {{auth}}
+
+### Get a building
+GET {{url}}/buildings/6718a752c351c3028ad4441b
+Authorization: {{auth}}

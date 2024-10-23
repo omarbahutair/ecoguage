@@ -1,9 +1,19 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { BuildingsService } from './buildings.service';
 import { UpsertBuildingDto } from './dtos/upsert-building.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserDocument } from 'src/users/user.schema';
+import { PaginationDto } from 'src/util/dtos/pagination.dto';
 
 @Controller('buildings')
 export class BuildingsController {
@@ -26,5 +36,20 @@ export class BuildingsController {
     @CurrentUser() user: UserDocument,
   ) {
     return this.buildingsService.update(id, createBuilding, user);
+  }
+
+  @Get(':id')
+  @UseGuards(AuthGuard)
+  public findOne(@Param('id') id: string, @CurrentUser() user: UserDocument) {
+    return this.buildingsService.findOne(id, user);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard)
+  public find(
+    @Query() filter: PaginationDto,
+    @CurrentUser() user: UserDocument,
+  ) {
+    return this.buildingsService.find(filter, user);
   }
 }
