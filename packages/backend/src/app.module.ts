@@ -7,6 +7,7 @@ import { KeysModule } from './keys/keys.module';
 import { KeysService } from './keys/keys.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { BuildingsModule } from './buildings/buildings.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AuthModule } from './auth/auth.module';
     KeysModule,
     UsersModule,
     AuthModule,
+    BuildingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
