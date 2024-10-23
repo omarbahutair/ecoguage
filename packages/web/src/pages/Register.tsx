@@ -2,10 +2,11 @@ import React, { useCallback, useState } from 'react';
 import BackPanel from '../assets/back-panel.jpg';
 import Input from '../components/Input';
 import { Link, useNavigate } from 'react-router-dom';
-import { apiClient, configApiClient } from '../util/apiClient';
-import { accessToken } from '../keywords';
+import { apiClient } from '../util/apiClient';
 import Message, { MessageState } from '../components/Message';
 import Button from '../components/Button';
+import { store } from '../store';
+import { refreshAuth } from '../store/auth-slice';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -50,8 +51,9 @@ export default function Register() {
 
       const { data } = await apiClient.post('/auth/register', form);
 
-      localStorage.setItem(accessToken, `Bearer ${data.accessToken}`);
-      configApiClient();
+      store.dispatch(
+        refreshAuth({ accessToken: `Bearer ${data.accessToken}` }),
+      );
       navigate('/');
     } catch (error: any) {
       switch (error.response?.status) {
