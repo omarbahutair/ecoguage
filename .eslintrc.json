@@ -13,7 +13,9 @@
   "rules": {
     "import/prefer-default-export": "off",
     "class-methods-use-this": "off",
-    "@typescript-eslint/explicit-member-accessibility": "error"
+    "@typescript-eslint/explicit-member-accessibility": "error",
+    "no-param-reassign": "off",
+    "no-underscore-dangle": ["error", { "allow": "_id" }]
   },
   "ignorePatterns": ["packages/backend/dist/*", "packages/web/vite.config.ts"]
 }
