@@ -20,7 +20,7 @@ Authorization: {{auth}}
 Content-Type: application/json
 
 {
-  "name": "Home"
+  "name": "Office"
 }
 
 ### Update building
@@ -37,7 +37,7 @@ GET {{url}}/buildings
 Authorization: {{auth}}
 
 ### Get a building
-GET {{url}}/buildings/6718a752c351c3028ad4441b
+GET {{url}}/buildings/6718c86d7996c7907555bdb3
 Authorization: {{auth}}
 
 ### DELETE a building

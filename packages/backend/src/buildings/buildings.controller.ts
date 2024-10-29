@@ -15,8 +15,11 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserDocument } from 'src/users/user.schema';
 import { PaginationDto } from 'src/util/dtos/pagination.dto';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { BuildingDto } from './dtos/building.dto';
 
 @Controller('buildings')
+@Serialize(BuildingDto)
 export class BuildingsController {
   public constructor(private readonly buildingsService: BuildingsService) {}
 
