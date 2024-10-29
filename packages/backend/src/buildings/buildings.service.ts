@@ -23,12 +23,13 @@ export class BuildingsService {
     return this.buildingModel.create({
       ...createBuilding,
       userId: user._id,
+      isDeleted: false,
     });
   }
 
   public async update(
     id: string,
-    updateBuilding: UpsertBuildingDto,
+    buildingUpdate: UpsertBuildingDto,
     user: UserDocument,
   ): Promise<BuildingDocument> {
     if (!isValidObjectId(id))
@@ -38,8 +39,9 @@ export class BuildingsService {
       {
         _id: id,
         userId: user._id,
+        isDeleted: false,
       },
-      updateBuilding,
+      buildingUpdate,
       { new: true },
     );
 
@@ -58,6 +60,7 @@ export class BuildingsService {
     const building = await this.buildingModel.findOne({
       _id: id,
       userId: user._id,
+      isDeleted: false,
     });
 
     if (!building) throw new NotFoundException('Building not found');
@@ -69,16 +72,40 @@ export class BuildingsService {
     { page = 0, pageSize = 50 }: PaginationDto,
     user: UserDocument,
   ): Promise<PaginatedResponse<BuildingDocument>> {
-    const query: FilterQuery<UserDocument> = { userId: user._id };
+    const query: FilterQuery<BuildingDocument> = {
+      userId: user._id,
+      isDeleted: false,
+    };
 
     return {
       data: await this.buildingModel
-        .find()
+        .find(query)
         .skip(page * pageSize)
         .limit(pageSize),
       metadata: {
         count: await this.buildingModel.countDocuments(query),
       },
     };
+  }
+
+  public async delete(
+    id: string,
+    user: UserDocument,
+  ): Promise<BuildingDocument> {
+    const deletedBuilding = await this.buildingModel.findOneAndUpdate(
+      {
+        _id: id,
+        userId: user._id,
+        isDeleted: false,
+      },
+      {
+        isDeleted: true,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (!deletedBuilding) throw new NotFoundException('Building not found');
+
+    return deletedBuilding;
   }
 }

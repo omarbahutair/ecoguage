@@ -1,5 +1,5 @@
 @url=http://localhost:5000
-@auth=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NmZjZWQ1M2ViOWMyNWJiMzliZTczZDgiLCJpYXQiOjE3Mjk2Njg4ODcsImV4cCI6MTczMjI2MDg4N30.VtMTbp33MstxcA7AYRkVdMy7gS4dFaBZGMKbJZoJUCI
+@auth=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NmZjZWQ1M2ViOWMyNWJiMzliZTczZDgiLCJpYXQiOjE3MzAxODAxOTIsImV4cCI6MTczMjc3MjE5Mn0.pRlWeq7c_OqAMuYqa_zC1oDprHpdU6DUhU7QTwWKufo
 
 ### Login
 POST {{url}}/auth/login
@@ -33,9 +33,13 @@ Content-Type: application/json
 }
 
 ### Get buildings
-GET {{url}}/buildings?pageSize=1&page=3
+GET {{url}}/buildings
 Authorization: {{auth}}
 
 ### Get a building
 GET {{url}}/buildings/6718a752c351c3028ad4441b
+Authorization: {{auth}}
+
+### DELETE a building
+DELETE {{url}}/buildings/6718a752c351c3028ad4441b
 Authorization: {{auth}}

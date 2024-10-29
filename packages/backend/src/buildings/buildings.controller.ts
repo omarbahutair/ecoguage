@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -51,5 +52,11 @@ export class BuildingsController {
     @CurrentUser() user: UserDocument,
   ) {
     return this.buildingsService.find(filter, user);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  public delete(@Param('id') id: string, @CurrentUser() user: UserDocument) {
+    return this.buildingsService.delete(id, user);
   }
 }
