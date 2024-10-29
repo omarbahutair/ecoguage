@@ -12,4 +12,7 @@ export class BuildingDto {
 
   @Expose()
   public updatedAt: Date;
+
+  @Expose()
+  public deletedAt: Date;
 }

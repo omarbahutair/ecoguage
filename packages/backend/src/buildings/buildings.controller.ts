@@ -17,6 +17,7 @@ import { UserDocument } from 'src/users/user.schema';
 import { PaginationDto } from 'src/util/dtos/pagination.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { BuildingDto } from './dtos/building.dto';
+import { BuildingsFilterDto } from './dtos/buildings-filter.dto';
 
 @Controller('buildings')
 @Serialize(BuildingDto)
@@ -51,7 +52,7 @@ export class BuildingsController {
   @Get()
   @UseGuards(AuthGuard)
   public find(
-    @Query() filter: PaginationDto,
+    @Query() filter: BuildingsFilterDto,
     @CurrentUser() user: UserDocument,
   ) {
     return this.buildingsService.find(filter, user);

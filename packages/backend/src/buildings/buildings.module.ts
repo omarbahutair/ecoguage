@@ -3,6 +3,8 @@ import { BuildingsController } from './buildings.controller';
 import { BuildingsService } from './buildings.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Building, BuildingSchema } from './building.schema';
+import { ManageDeletedBuildingsController } from './manage-deleted-buildings.controller';
+import { ManageDeletedBuildingsService } from './manage-deleted-buildings.service';
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import { Building, BuildingSchema } from './building.schema';
       },
     ]),
   ],
-  controllers: [BuildingsController],
-  providers: [BuildingsService],
+  controllers: [BuildingsController, ManageDeletedBuildingsController],
+  providers: [BuildingsService, ManageDeletedBuildingsService],
 })
 export class BuildingsModule {}

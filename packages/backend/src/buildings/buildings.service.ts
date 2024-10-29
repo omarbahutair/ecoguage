@@ -9,6 +9,8 @@ import { FilterQuery, isValidObjectId, Model } from 'mongoose';
 import { UpsertBuildingDto } from './dtos/upsert-building.dto';
 import { UserDocument } from 'src/users/user.schema';
 import { PaginationDto } from 'src/util/dtos/pagination.dto';
+import { BuildingsFilterDto } from './dtos/buildings-filter.dto';
+import { cleanRegex } from 'src/util/functions/cleanRegex';
 
 @Injectable()
 export class BuildingsService {
@@ -69,13 +71,21 @@ export class BuildingsService {
   }
 
   public async find(
-    { page = 0, pageSize = 50 }: PaginationDto,
+    { page = 0, pageSize = 50, searchTerm }: BuildingsFilterDto,
     user: UserDocument,
   ): Promise<PaginatedResponse<BuildingDocument>> {
     const query: FilterQuery<BuildingDocument> = {
       userId: user._id,
       isDeleted: false,
     };
+
+    console.log(searchTerm);
+    if (searchTerm) {
+      query.name = {
+        $regex: cleanRegex(searchTerm),
+        $options: 'i',
+      };
+    }
 
     return {
       data: await this.buildingModel

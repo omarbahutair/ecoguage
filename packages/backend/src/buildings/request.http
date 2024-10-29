@@ -43,3 +43,7 @@ Authorization: {{auth}}
 ### DELETE a building
 DELETE {{url}}/buildings/6718a752c351c3028ad4441b
 Authorization: {{auth}}
+
+### Get deleted
+GET {{url}}/manage-deleted-buildings
+Authorization: {{auth}}
