@@ -55,7 +55,7 @@ export default function Register() {
       store.dispatch(
         refreshAuth({ accessToken: `Bearer ${data.accessToken}` }),
       );
-      navigate('/');
+      navigate('/dashboard');
     } catch (error: any) {
       switch (error.response?.status) {
         case 422:

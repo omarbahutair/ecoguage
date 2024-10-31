@@ -6,5 +6,7 @@ interface LogoProps {
 }
 
 export default function Logo({ className }: LogoProps) {
-  return <img src={LogoImage} className={className ?? 'w-32'} />;
+  return (
+    <img src={LogoImage} className={className ?? 'w-32'} draggable={false} />
+  );
 }
