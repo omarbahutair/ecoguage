@@ -7,6 +7,7 @@ import Message, { MessageState } from '../components/Message';
 import Button from '../components/Button';
 import { refreshAuth } from '../store/auth-slice';
 import { store } from '../store';
+import Logo from '../components/Logo';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -70,17 +71,18 @@ export default function Login() {
       style={{
         backgroundImage: `url(${BackPanel})`,
       }}
-      className="h-screen bg-no-repeat bg-cover flex items-center justify-center"
+      className="h-screen bg-no-repeat bg-center bg-cover flex items-center justify-center"
     >
       <form
-        className="flex flex-col gap-10 w-full max-w-md bg-white bg-opacity-50 backdrop-blur-md px-5 py-8 rounded-xl"
+        className="flex flex-col gap-10 w-full max-w-md bg-white bg-opacity-50 backdrop-blur-md px-5 py-8 rounded-xl m-2 shadow"
         onSubmit={(e) => {
           e.preventDefault();
 
           onSubmit();
         }}
       >
-        <header className="flex justify-center w-full">
+        <Logo className="w-24 m-auto" />
+        <header className="flex flex-col items-center justify-center w-full gap-5">
           <h1 className="text-2xl text-primary font-bold">Login</h1>
         </header>
         <main className="flex flex-col gap-3">
