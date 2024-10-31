@@ -1,7 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Building, BuildingDocument } from './building.schema';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, isValidObjectId, Model } from 'mongoose';
 import { UserDocument } from 'src/users/user.schema';
 import { BuildingsFilterDto } from './dtos/buildings-filter.dto';
 import { cleanRegex } from 'src/util/functions/cleanRegex';
@@ -34,5 +38,32 @@ export class ManageDeletedBuildingsService {
         count: await this.buildingModel.countDocuments(query),
       },
     };
+  }
+
+  public async recoverDeleted(
+    id: string,
+    user: UserDocument,
+  ): Promise<BuildingDocument> {
+    if (!isValidObjectId(id))
+      throw new BadRequestException('Invalid building ID');
+
+    const updatedBuilding = await this.buildingModel.findOneAndUpdate(
+      {
+        _id: id,
+        userId: user._id,
+        isDeleted: true,
+      },
+      {
+        isDeleted: false,
+        $unset: {
+          deletedAt: '',
+        },
+      },
+      { new: true },
+    );
+
+    if (!updatedBuilding) throw new NotFoundException('Building not found');
+
+    return updatedBuilding;
   }
 }

@@ -98,10 +98,13 @@ export class BuildingsService {
     };
   }
 
-  public async delete(
+  public async softDelete(
     id: string,
     user: UserDocument,
   ): Promise<BuildingDocument> {
+    if (!isValidObjectId(id))
+      throw new BadRequestException('Invalid building ID');
+
     const deletedBuilding = await this.buildingModel.findOneAndUpdate(
       {
         _id: id,
@@ -113,6 +116,23 @@ export class BuildingsService {
         deletedAt: new Date(),
       },
     );
+
+    if (!deletedBuilding) throw new NotFoundException('Building not found');
+
+    return deletedBuilding;
+  }
+
+  public async delete(
+    id: string,
+    user: UserDocument,
+  ): Promise<BuildingDocument> {
+    if (!isValidObjectId(id))
+      throw new BadRequestException('Invalid building ID');
+
+    const deletedBuilding = await this.buildingModel.findOneAndDelete({
+      _id: id,
+      userId: user._id,
+    });
 
     if (!deletedBuilding) throw new NotFoundException('Building not found');
 

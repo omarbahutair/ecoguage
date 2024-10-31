@@ -14,7 +14,6 @@ import { UpsertBuildingDto } from './dtos/upsert-building.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserDocument } from 'src/users/user.schema';
-import { PaginationDto } from 'src/util/dtos/pagination.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { BuildingDto } from './dtos/building.dto';
 import { BuildingsFilterDto } from './dtos/buildings-filter.dto';
@@ -59,6 +58,15 @@ export class BuildingsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
+  public softDelete(
+    @Param('id') id: string,
+    @CurrentUser() user: UserDocument,
+  ) {
+    return this.buildingsService.softDelete(id, user);
+  }
+
+  @Delete(':id/hard')
   @UseGuards(AuthGuard)
   public delete(@Param('id') id: string, @CurrentUser() user: UserDocument) {
     return this.buildingsService.delete(id, user);

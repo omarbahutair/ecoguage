@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Put, Query, UseGuards } from '@nestjs/common';
 import { ManageDeletedBuildingsService } from './manage-deleted-buildings.service';
 import { BuildingDocument } from './building.schema';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
@@ -22,5 +22,14 @@ export class ManageDeletedBuildingsController {
     @CurrentUser() user: UserDocument,
   ): Promise<PaginatedResponse<BuildingDocument>> {
     return this.manageDeletedBuildingsService.findDeleted(filter, user);
+  }
+
+  @Put(':id')
+  @UseGuards(AuthGuard)
+  public recoverDeleted(
+    @Param('id') id: string,
+    @CurrentUser() user: UserDocument,
+  ): Promise<BuildingDocument> {
+    return this.manageDeletedBuildingsService.recoverDeleted(id, user);
   }
 }

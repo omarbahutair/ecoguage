@@ -37,7 +37,7 @@ GET {{url}}/buildings
 Authorization: {{auth}}
 
 ### Get a building
-GET {{url}}/buildings/6718c86d7996c7907555bdb3
+GET {{url}}/buildings/6718a752c351c3028ad4441b
 Authorization: {{auth}}
 
 ### DELETE a building
@@ -46,4 +46,8 @@ Authorization: {{auth}}
 
 ### Get deleted
 GET {{url}}/manage-deleted-buildings
+Authorization: {{auth}}
+
+### Recover deleted
+PUT {{url}}/manage-deleted-buildings/6718a752c351c3028ad4441b
 Authorization: {{auth}}
