@@ -14,9 +14,9 @@ export default function SideBar({ className }: SideBarProps) {
     [],
   );
   return (
-    <div className={`${className} flex flex-col p-4`}>
+    <div className={`${className} flex flex-col gap-1 p-4`}>
       {links.map((link) => (
-        <SideBarLink {...link} />
+        <SideBarLink key={link.to} {...link} />
       ))}
     </div>
   );
