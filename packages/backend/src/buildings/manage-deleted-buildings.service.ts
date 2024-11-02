@@ -9,6 +9,7 @@ import { FilterQuery, isValidObjectId, Model } from 'mongoose';
 import { UserDocument } from 'src/users/user.schema';
 import { BuildingsFilterDto } from './dtos/buildings-filter.dto';
 import { cleanRegex } from 'src/util/functions/cleanRegex';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class ManageDeletedBuildingsService {
@@ -65,5 +66,15 @@ export class ManageDeletedBuildingsService {
     if (!updatedBuilding) throw new NotFoundException('Building not found');
 
     return updatedBuilding;
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  public async manageDeleted(): Promise<void> {
+    await this.buildingModel.deleteMany({
+      isDeleted: true,
+      deletedAt: {
+        $lt: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+      },
+    });
   }
 }
