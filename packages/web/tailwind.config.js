@@ -12,7 +12,27 @@ export default {
         primary,
         'primary-fade': '#36454f',
       },
+      keyframes: {
+        'fade-in': {
+          '0%': {
+            opacity: '0%',
+          },
+          '100%': {
+            opacity: '100%',
+          },
+        },
+        'fade-out': {
+          '100%': {
+            opacity: '0%',
+            display: 'none',
+          },
+        },
+      },
+      animation: {
+        'fade-in': 'fade-in 150ms forwards',
+        'fade-out': 'fade-out 150ms forwards',
+      },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar')],
 };

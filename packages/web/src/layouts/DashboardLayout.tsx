@@ -26,7 +26,7 @@ export default function DashboardLayout() {
           className="lg:hidden"
         />
       </header>
-      <main className="flex-1 flex w-full relative bg-neutral-50">
+      <main className="flex-1 flex w-full relative overflow-hidden bg-neutral-50">
         <div
           className={`absolute lg:relative w-full lg:max-w-80 h-full p-2 overflow-auto transition-all duration-500 ${isExtended ? 'backdrop-blur-sm bg-white bg-opacity-50 z-50' : 'lg:-translate-x-full lg:!max-w-0 lg:overflow-hidden opacity-0 -z-50'}`}
         >

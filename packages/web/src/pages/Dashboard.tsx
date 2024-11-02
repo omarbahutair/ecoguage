@@ -3,17 +3,22 @@ import Spinner from '../components/Spinner';
 import { apiClient } from '../util/apiClient';
 import Empty from '../assets/empty.png';
 import { Link } from 'react-router-dom';
+import Modal from '../components/Modal';
+import CreateBuildingForm from '../components/CreateBuildingForm';
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [buildings, setBuildings] = useState<Array<Record<string, any>>>([]);
   const [count, setCount] = useState(0);
+  const [modals, setModals] = useState({
+    create: false,
+  });
 
   const fetchBuildings = useCallback(async (controller?: AbortController) => {
     try {
       setIsLoading(true);
 
-      const { data } = await apiClient.get('buildings', {
+      const { data } = await apiClient.get('buildings?pageSize=1000', {
         signal: controller?.signal,
       });
 
@@ -53,9 +58,10 @@ export default function Dashboard() {
       );
 
     return (
-      <div className="flex flex-wrap gap-3 py-10">
+      <div className="flex flex-wrap gap-3 p-5 max-h-full overflow-y-auto">
         {buildings.map((b) => (
           <Link
+            key={b.id}
             className="flex items-center justify-between w-full sm:flex-1 sm:min-w-48 sm:max-w-60 p-4 shadow rounded hover:scale-105 hover:shadow-lg transition-all border"
             to={`/buildings/${b.id}`}
           >
@@ -68,12 +74,12 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-5 w-full flex flex-col gap-5 sm:gap-10">
+    <div className="p-5 w-full flex flex-col gap-5 sm:gap-10 h-full overflow-hidden">
       <header className="flex flex-col gap-4">
         <h1 className="text-2xl sm:text-4xl font-semibold">Dashboard</h1>
       </header>
-      <main className="bg-white shadow w-full p-8 rounded-lg">
-        <div className="flex flex-col sm:flex-row items-center gap-3 justify-end">
+      <main className="bg-white shadow w-full rounded-lg flex flex-col max-h-full overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-center gap-3 justify-end p-5">
           <label className="mr-auto">
             Buildings:{' '}
             <span className="text-primary-fade font-semibold">{count}</span>
@@ -88,13 +94,34 @@ export default function Dashboard() {
             <i className="fa-solid fa-rotate-right group-hover:rotate-[360deg] duration-500 transition-all" />
             REFRESH
           </button>
-          <button className="w-full sm:w-fit flex gap-3 items-center group justify-center bg-primary-fade border border-primary-fade text-white px-5 py-2 rounded">
+          <button
+            onClick={() => {
+              setModals((prev) => ({ ...prev, create: true }));
+            }}
+            className="w-full sm:w-fit flex gap-3 items-center group justify-center bg-primary-fade border border-primary-fade text-white px-5 py-2 rounded"
+          >
             <i className="fa-solid fa-plus group-hover:rotate-180 duration-500 transition-all" />
             CREATE
           </button>
         </div>
         {renderMain()}
       </main>
+      <Modal
+        onClose={() => {
+          setModals((prev) => ({ ...prev, create: false }));
+        }}
+        isOpen={modals.create}
+      >
+        <CreateBuildingForm
+          onCancel={() => {
+            setModals((prev) => ({ ...prev, create: false }));
+          }}
+          onSuccess={() => {
+            fetchBuildings();
+            setModals((prev) => ({ ...prev, create: false }));
+          }}
+        />
+      </Modal>
     </div>
   );
 }

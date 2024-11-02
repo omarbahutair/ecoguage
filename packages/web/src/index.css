@@ -6,3 +6,7 @@
 * {
   font-family: 'Oxanium', 'Montserrat Alternates', sans-serif;
 }
+
+* {
+  @apply scrollbar-thin scrollbar-thumb-primary-fade scrollbar-track-transparent;
+}
