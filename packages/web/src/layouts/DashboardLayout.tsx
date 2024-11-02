@@ -9,7 +9,7 @@ export default function DashboardLayout() {
 
   return (
     <div className="h-[100dvh] w-screen overflow-hidden flex flex-col">
-      <header className="flex items-center justify-between lg:justify-start gap-3 px-4 py-2 z-[60] shadow">
+      <header className="flex items-center justify-between lg:justify-start gap-5 px-4 py-2 z-[60] shadow">
         <ExtenderButton
           isExtended={isExtended}
           onClick={() => {
@@ -17,7 +17,10 @@ export default function DashboardLayout() {
           }}
           className="hidden lg:flex"
         />
-        <Logo className="w-14" />
+        <div className="flex items-center gap-3">
+          <Logo className="w-8" />
+          <h1 className="text-2xl font-semibold text-primary-fade">ECOGUAGE</h1>
+        </div>
         <ExtenderButton
           isExtended={isExtended}
           onClick={() => {
