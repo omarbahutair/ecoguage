@@ -58,7 +58,7 @@ export default function Dashboard() {
       );
 
     return (
-      <div className="flex flex-wrap gap-3 p-5 max-h-full overflow-y-auto">
+      <div className="flex flex-wrap gap-3 p-5 max-h-full overflow-x-hidden overflow-y-auto">
         {buildings.map((b) => (
           <Link
             key={b.id}
