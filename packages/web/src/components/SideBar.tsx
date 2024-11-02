@@ -8,8 +8,18 @@ interface SideBarProps {
 export default function SideBar({ className }: SideBarProps) {
   const links = useMemo(
     () => [
-      { label: 'Dashboard', to: '/dashboard', icon: 'fa-solid fa-gauge' },
-      { label: 'Trash', to: '/trash', icon: 'fa-solid fa-trash' },
+      {
+        label: 'Dashboard',
+        to: '/dashboard',
+        icon: 'fa-solid fa-gauge',
+        highlightWhen: ['/dashboard', '/buildings/:id'],
+      },
+      {
+        label: 'Trash',
+        to: '/trash',
+        icon: 'fa-solid fa-trash',
+        highlightWhen: ['/trash'],
+      },
     ],
     [],
   );

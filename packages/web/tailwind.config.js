@@ -27,10 +27,43 @@ export default {
             display: 'none',
           },
         },
+        slide: {
+          '0%': {
+            transform: 'translateX(0px)',
+          },
+          '25%': {
+            transform: 'translateX(-2px)',
+          },
+          '50%': {
+            transform: 'translateX(0px)',
+          },
+          '75%': {
+            transform: 'translateX(2px)',
+          },
+          '100%': {
+            transform: 'translateX(0px)',
+          },
+        },
+        'slide-left': {
+          '0%': {
+            transform: 'translateX(0px)',
+          },
+          '25%': {
+            transform: 'translateX(-4px)',
+          },
+          '50%': {
+            transform: 'translateX(0px)',
+          },
+          '100%': {
+            transform: 'translateX(0px)',
+          },
+        },
       },
       animation: {
         'fade-in': 'fade-in 150ms forwards',
         'fade-out': 'fade-out 150ms forwards',
+        slide: 'slide 500ms linear',
+        'slide-left': 'slide-left 1000ms infinite',
       },
     },
   },

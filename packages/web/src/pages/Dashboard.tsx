@@ -24,10 +24,8 @@ export default function Dashboard() {
 
       setBuildings(data.data);
       setCount(data.metadata.count);
-    } catch {
-    } finally {
       setIsLoading(false);
-    }
+    } catch {}
   }, []);
 
   useEffect(() => {

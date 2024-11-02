@@ -7,6 +7,7 @@ import { store } from './store';
 import { refreshAuth } from './store/auth-slice';
 import DashboardLayout from './layouts/DashboardLayout';
 import Dashboard from './pages/Dashboard';
+import Building from './pages/Building';
 
 export default function App() {
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="register" element={<Register />} />
         <Route element={<DashboardLayout />}>
           <Route element={<Dashboard />} path="dashboard" />
+          <Route element={<Building />} path="buildings/:id" />
         </Route>
       </Routes>
     </BrowserRouter>

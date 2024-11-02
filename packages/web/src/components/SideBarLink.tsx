@@ -3,15 +3,26 @@ import { Link, useLocation } from 'react-router-dom';
 
 interface SideBarLinkProps {
   to: string;
+  highlightWhen: string[];
   label: string;
   icon: string;
 }
 
-export default function SideBarLink({ to, label, icon }: SideBarLinkProps) {
+export default function SideBarLink({
+  to,
+  highlightWhen,
+  label,
+  icon,
+}: SideBarLinkProps) {
   const location = useLocation();
   const isSelected = useCallback(() => {
-    return location.pathname === to;
-  }, [location.pathname]);
+    return highlightWhen.some((given) => {
+      const pattern = given.replace(/:[^/]+/g, '[^/]+').replace(/\//g, '\\/');
+      const regex = new RegExp(`^${pattern}\\/?$`);
+
+      return regex.test(location.pathname);
+    });
+  }, [location.pathname, highlightWhen]);
 
   return (
     <Link
