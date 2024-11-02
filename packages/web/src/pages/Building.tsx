@@ -7,6 +7,7 @@ import Modal from '../components/Modal';
 import UpsertBuildingForm, {
   ErrorsType,
 } from '../components/UpsertBuildingForm';
+import DeleteForm from '../components/DeleteForm';
 
 export default function Building() {
   const { id } = useParams();
@@ -16,6 +17,7 @@ export default function Building() {
   const [building, setBuilding] = useState<Record<string, any> | null>(null);
   const [modals, setModals] = useState({
     edit: false,
+    delete: false,
   });
 
   const fetchBuilding = useCallback(
@@ -102,7 +104,12 @@ export default function Building() {
             <i className="fa-regular fa-edit" />
             EDIT BUILDING
           </button>
-          <button className="text-red-600 border border-red-600 bg-white py-3 px-5 flex gap-3 items-center justify-center rounded">
+          <button
+            onClick={() => {
+              setModals((prev) => ({ ...prev, delete: true }));
+            }}
+            className="text-red-600 border border-red-600 bg-white py-3 px-5 flex gap-3 items-center justify-center rounded"
+          >
             <i className="fa-solid fa-trash" />
             DELETE
           </button>
@@ -144,6 +151,23 @@ export default function Building() {
               setErrors(updatedErrors);
               setIsLoading(false);
             }
+          }}
+        />
+      </Modal>
+      <Modal
+        onClose={() => {
+          setModals((prev) => ({ ...prev, delete: false }));
+        }}
+        isOpen={modals.delete}
+      >
+        <DeleteForm
+          title={`Delete ${building.name}?`}
+          deletePath={`/buildings/${id}`}
+          onCancel={() => {
+            setModals((prev) => ({ ...prev, delete: false }));
+          }}
+          onSucess={() => {
+            navigate('/dashboard');
           }}
         />
       </Modal>

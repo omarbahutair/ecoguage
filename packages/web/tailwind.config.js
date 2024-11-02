@@ -2,6 +2,7 @@ import { transform } from 'typescript';
 
 // const primary = '#168e47';
 const primary = '#b1c4b2';
+const primaryFade = '#36454f';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -10,7 +11,7 @@ export default {
     extend: {
       colors: {
         primary,
-        'primary-fade': '#36454f',
+        'primary-fade': primaryFade,
       },
       keyframes: {
         'fade-in': {
