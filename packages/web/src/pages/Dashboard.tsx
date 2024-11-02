@@ -4,7 +4,9 @@ import { apiClient } from '../util/apiClient';
 import Empty from '../assets/empty.png';
 import { Link } from 'react-router-dom';
 import Modal from '../components/Modal';
-import CreateBuildingForm from '../components/CreateBuildingForm';
+import UpsertBuildingForm, {
+  ErrorsType,
+} from '../components/UpsertBuildingForm';
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
@@ -110,13 +112,33 @@ export default function Dashboard() {
         }}
         isOpen={modals.create}
       >
-        <CreateBuildingForm
+        <UpsertBuildingForm
           onCancel={() => {
             setModals((prev) => ({ ...prev, create: false }));
           }}
-          onSuccess={() => {
-            fetchBuildings();
-            setModals((prev) => ({ ...prev, create: false }));
+          onSubmit={async (form, setIsLoading, setErrors) => {
+            const updatedErrors: ErrorsType = {
+              name: '',
+            };
+
+            try {
+              setIsLoading(true);
+
+              await apiClient.post('buildings', form);
+
+              fetchBuildings();
+              setModals((prev) => ({ ...prev, create: false }));
+            } catch (error: any) {
+              switch (error.response?.status) {
+                case 422:
+                  updatedErrors.name =
+                    error.response.data.validationErrors.name?.[0];
+                  break;
+              }
+            } finally {
+              setErrors(updatedErrors);
+              setIsLoading(false);
+            }
           }}
         />
       </Modal>

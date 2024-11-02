@@ -3,6 +3,10 @@ import { useNavigate, useParams } from 'react-router';
 import Spinner from '../components/Spinner';
 import { apiClient } from '../util/apiClient';
 import LinkSequence from '../components/LinkSequence';
+import Modal from '../components/Modal';
+import UpsertBuildingForm, {
+  ErrorsType,
+} from '../components/UpsertBuildingForm';
 
 export default function Building() {
   const { id } = useParams();
@@ -10,6 +14,9 @@ export default function Building() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [building, setBuilding] = useState<Record<string, any> | null>(null);
+  const [modals, setModals] = useState({
+    edit: false,
+  });
 
   const fetchBuilding = useCallback(
     async (controller?: AbortController) => {
@@ -86,7 +93,12 @@ export default function Building() {
           </p>
         </div>
         <div className="flex flex-col gap-1 sm:flex-row">
-          <button className="bg-primary-fade text-white py-3 px-5 rounded flex gap-3 items-center justify-center">
+          <button
+            onClick={() => {
+              setModals((prev) => ({ ...prev, edit: true }));
+            }}
+            className="bg-primary-fade text-white py-3 px-5 rounded flex gap-3 items-center justify-center"
+          >
             <i className="fa-regular fa-edit" />
             EDIT BUILDING
           </button>
@@ -96,6 +108,45 @@ export default function Building() {
           </button>
         </div>
       </header>
+      <Modal
+        onClose={() => {
+          setModals((prev) => ({ ...prev, edit: false }));
+        }}
+        isOpen={modals.edit}
+      >
+        <UpsertBuildingForm
+          defaultForm={{
+            name: building.name,
+          }}
+          onCancel={() => {
+            setModals((prev) => ({ ...prev, edit: false }));
+          }}
+          onSubmit={async (form, setIsLoading, setErrors) => {
+            const updatedErrors: ErrorsType = {
+              name: '',
+            };
+
+            try {
+              setIsLoading(true);
+
+              await apiClient.put(`buildings/${id}`, form);
+
+              fetchBuilding();
+              setModals((prev) => ({ ...prev, edit: false }));
+            } catch (error: any) {
+              switch (error.response?.status) {
+                case 422:
+                  updatedErrors.name =
+                    error.response.data.validationErrors.name?.[0];
+                  break;
+              }
+            } finally {
+              setErrors(updatedErrors);
+              setIsLoading(false);
+            }
+          }}
+        />
+      </Modal>
     </div>
   );
 }

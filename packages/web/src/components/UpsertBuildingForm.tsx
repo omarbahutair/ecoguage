@@ -1,55 +1,46 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import Input from './Input';
 import Spinner from './Spinner';
-import { apiClient } from '../util/apiClient';
+
+export interface FormType {
+  name: string;
+}
+
+export interface ErrorsType {
+  name: string;
+}
 
 interface CreateBuildingFormProps {
   onCancel: () => void;
-  onSuccess: () => void;
+  onSubmit: (
+    form: FormType,
+    setIsLoading: (isLoading: boolean) => void,
+    setErrors: (errors: ErrorsType) => void,
+  ) => Promise<void> | void;
+  defaultForm?: FormType;
 }
 
-export default function CreateBuildingForm({
+export default function UpsertBuildingForm({
   onCancel,
-  onSuccess,
+  onSubmit,
+  defaultForm,
 }: CreateBuildingFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [form, setForm] = useState({
-    name: '',
-  });
-  const [errors, setErrors] = useState({
-    name: '',
-  });
-
-  const onSubmit = useCallback(async () => {
-    const updatedErrors: typeof errors = {
+  const [form, setForm] = useState<FormType>(
+    defaultForm ?? {
       name: '',
-    };
-
-    try {
-      setIsLoading(true);
-
-      const { data } = await apiClient.post('buildings', form);
-
-      setForm(data);
-      onSuccess();
-    } catch (error: any) {
-      switch (error.response?.status) {
-        case 422:
-          updatedErrors.name = error.response.data.validationErrors.name?.[0];
-          break;
-      }
-    } finally {
-      setErrors(updatedErrors);
-      setIsLoading(false);
-    }
-  }, [form]);
+    },
+  );
+  const [errors, setErrors] = useState<ErrorsType>({
+    name: '',
+  });
 
   return (
     <form
       className="flex flex-col gap-10"
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit();
+        onSubmit(form, setIsLoading, setErrors);
       }}
     >
       <header className="text-lg font-semibold">CREATE BUILDING</header>
