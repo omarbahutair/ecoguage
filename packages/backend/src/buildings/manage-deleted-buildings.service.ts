@@ -80,7 +80,7 @@ export class ManageDeletedBuildingsService {
     };
 
     const buildingsIds = (
-      await this.buildingModel.find(findDeletedBuildingsQuery)
+      await this.buildingModel.find(findDeletedBuildingsQuery, '_id')
     ).map((b) => b._id);
 
     await Promise.all([

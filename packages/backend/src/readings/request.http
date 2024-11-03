@@ -30,9 +30,13 @@ Authorization: {{auth}}
 Content-Type: application/json
 
 {
-  "building": "672075d9e8117b78a1a11974",
-  "year": 2020,
-  "month": 1,
+  "building": "6727aa24849eab60967ca071",
+  "year": 2023,
+  "month": 3,
   "energyUsage": 200,
   "energyCost": 1500
 }
+
+### Get readings
+GET {{url}}/readings
+Authorization: {{auth}}
