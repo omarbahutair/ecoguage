@@ -58,8 +58,9 @@ export default function Building() {
 
   if (!building)
     return (
-      <div>
-        <p>Building not found</p>
+      <div className="w-full h-full max-h-96 flex flex-col items-center justify-center gap-10">
+        <h1 className="text-8xl font-semibold">404 :(</h1>
+        <p className="text-neutral-400 text-lg">Building not found</p>
       </div>
     );
 
