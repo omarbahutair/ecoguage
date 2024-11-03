@@ -3,9 +3,10 @@ import SideBarLink from './SideBarLink';
 
 interface SideBarProps {
   className?: string;
+  onLinkClick?: () => void;
 }
 
-export default function SideBar({ className }: SideBarProps) {
+export default function SideBar({ className, onLinkClick }: SideBarProps) {
   const links = useMemo(
     () => [
       {
@@ -23,10 +24,11 @@ export default function SideBar({ className }: SideBarProps) {
     ],
     [],
   );
+
   return (
     <div className={`${className} flex flex-col gap-1 p-4`}>
       {links.map((link) => (
-        <SideBarLink key={link.to} {...link} />
+        <SideBarLink onClick={onLinkClick} key={link.to} {...link} />
       ))}
     </div>
   );

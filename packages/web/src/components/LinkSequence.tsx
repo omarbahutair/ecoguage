@@ -16,7 +16,7 @@ export default function LinkSequence({ sequence }: LinkSequenceProps) {
   return (
     <div className="flex items-center gap-4 text-primary-fade">
       {sequence.map((link, idx) => (
-        <>
+        <React.Fragment key={idx}>
           {idx ? <i className="fa-solid fa-chevron-right text-xs" /> : null}
           <Link
             to={link.to}
@@ -24,7 +24,7 @@ export default function LinkSequence({ sequence }: LinkSequenceProps) {
           >
             {link.label}
           </Link>
-        </>
+        </React.Fragment>
       ))}
     </div>
   );

@@ -37,6 +37,11 @@ export default function DashboardLayout() {
             className={`w-full lg:h-full transition-all duration-500 ${isExtended ? '' : '-translate-x-[110%] lg:-translate-x-0'}`}
           >
             <SideBar
+              onLinkClick={() => {
+                if (window.innerWidth < 1024) {
+                  setIsExtended(false);
+                }
+              }}
               className={`bg-primary-fade w-full h-full max-w-xl m-auto rounded-lg`}
             />
           </div>

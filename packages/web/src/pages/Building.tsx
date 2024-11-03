@@ -32,7 +32,7 @@ export default function Building() {
         setBuilding(data);
         setIsLoading(false);
       } catch (error: any) {
-        if (error.response.status) setIsLoading(false);
+        if (error.response?.status) setIsLoading(false);
       }
     },
     [id],
@@ -122,6 +122,7 @@ export default function Building() {
         isOpen={modals.edit}
       >
         <UpsertBuildingForm
+          title="EDIT BUILDING"
           defaultForm={{
             name: building.name,
           }}

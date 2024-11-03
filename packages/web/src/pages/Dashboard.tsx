@@ -113,6 +113,7 @@ export default function Dashboard() {
         isOpen={modals.create}
       >
         <UpsertBuildingForm
+          title="CREATE BUILDING"
           onCancel={() => {
             setModals((prev) => ({ ...prev, create: false }));
           }}

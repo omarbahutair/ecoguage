@@ -1,5 +1,3 @@
-import { transform } from 'typescript';
-
 // const primary = '#168e47';
 const primary = '#b1c4b2';
 const primaryFade = '#36454f';

@@ -6,6 +6,7 @@ interface SideBarLinkProps {
   highlightWhen: string[];
   label: string;
   icon: string;
+  onClick?: () => void;
 }
 
 export default function SideBarLink({
@@ -13,6 +14,7 @@ export default function SideBarLink({
   highlightWhen,
   label,
   icon,
+  onClick,
 }: SideBarLinkProps) {
   const location = useLocation();
   const isSelected = useCallback(() => {
@@ -28,12 +30,7 @@ export default function SideBarLink({
     <Link
       to={to}
       className={`flex items-center justify-center gap-5 px-5 py-3 rounded text-white hover:bg-white hover:bg-opacity-10 transition-all ${isSelected() ? 'bg-white bg-opacity-20' : ''}`}
-      style={
-        {
-          // color: '#2f4f4f',
-          // color: '#36454f',
-        }
-      }
+      onClick={onClick}
     >
       <i className={icon} />
       <label>{label}</label>
