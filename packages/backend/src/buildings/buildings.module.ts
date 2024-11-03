@@ -17,5 +17,6 @@ import { ManageDeletedBuildingsService } from './manage-deleted-buildings.servic
   ],
   controllers: [BuildingsController, ManageDeletedBuildingsController],
   providers: [BuildingsService, ManageDeletedBuildingsService],
+  exports: [BuildingsService],
 })
 export class BuildingsModule {}
