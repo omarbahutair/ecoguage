@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { primary } from '../colors';
+import { primaryFade } from '../colors';
 import { ScaleLoader } from 'react-spinners';
 
 interface SpinnerProps {
@@ -33,7 +33,7 @@ export default function Spinner({ color, isLoading, size }: SpinnerProps) {
   const getColor = useCallback(() => {
     switch (color) {
       case 'primary':
-        return primary;
+        return primaryFade;
       case 'white':
         return 'white';
     }

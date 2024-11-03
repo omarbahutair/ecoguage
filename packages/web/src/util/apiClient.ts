@@ -6,7 +6,11 @@ export const apiClient = axios.create({
 });
 
 export const configApiClient = () => {
-  const token = localStorage.getItem(accessToken);
+  apiClient.interceptors.request.use((value) => {
+    const token = localStorage.getItem(accessToken);
 
-  if (token) apiClient.defaults.headers.Authorization = token;
+    if (token) value.headers.Authorization = token;
+
+    return value;
+  });
 };

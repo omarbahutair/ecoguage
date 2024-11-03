@@ -5,6 +5,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { store } from './store';
 import { refreshAuth } from './store/auth-slice';
+import DashboardLayout from './layouts/DashboardLayout';
+import Dashboard from './pages/Dashboard';
+import Building from './pages/Building';
+import Trash from './pages/Trash';
 
 export default function App() {
   useEffect(() => {
@@ -15,8 +19,13 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route element={<DashboardLayout />}>
+          <Route element={<Dashboard />} path="dashboard" />
+          <Route element={<Building />} path="buildings/:id" />
+          <Route element={<Trash />} path="trash" />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

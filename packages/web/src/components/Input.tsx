@@ -32,7 +32,7 @@ export default function Input({
   return (
     <div className={`${className ?? ''} flex flex-col gap-1`}>
       {label && (
-        <label tabIndex={-1} className="text-primary font-semibold">
+        <label tabIndex={-1} className="text-primary-fade font-semibold">
           {label}
         </label>
       )}
