@@ -20,8 +20,6 @@ Content-Type: application/json
   "password": "newPassword123!"
 }
 
-
-
 ### Get buildings
 GET {{url}}/buildings
 Authorization: {{auth}}
@@ -32,9 +30,9 @@ Authorization: {{auth}}
 Content-Type: application/json
 
 {
-  "building": "6718c86d7996c7907555bdb3",
+  "building": "672075d9e8117b78a1a11974",
   "year": 2020,
-  "month": 2,
+  "month": 1,
   "energyUsage": 200,
   "energyCost": 1500
 }

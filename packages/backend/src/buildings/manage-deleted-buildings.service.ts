@@ -10,11 +10,13 @@ import { UserDocument } from 'src/users/user.schema';
 import { BuildingsFilterDto } from './dtos/buildings-filter.dto';
 import { cleanRegex } from 'src/util/functions/cleanRegex';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { Reading } from 'src/readings/reading.schema';
 
 @Injectable()
 export class ManageDeletedBuildingsService {
   public constructor(
     @InjectModel(Building.name) private readonly buildingModel: Model<Building>,
+    @InjectModel(Reading.name) private readonly readingModel: Model<Reading>,
   ) {}
 
   public async findDeleted(
@@ -68,13 +70,24 @@ export class ManageDeletedBuildingsService {
     return updatedBuilding;
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  @Cron(CronExpression.EVERY_10_SECONDS)
   public async manageDeleted(): Promise<void> {
-    await this.buildingModel.deleteMany({
+    const findDeletedBuildingsQuery: FilterQuery<Building> = {
       isDeleted: true,
       deletedAt: {
         $lt: new Date(new Date().setMonth(new Date().getMonth() - 1)),
       },
-    });
+    };
+
+    const buildingsIds = (
+      await this.buildingModel.find(findDeletedBuildingsQuery)
+    ).map((b) => b._id);
+
+    await Promise.all([
+      this.buildingModel.deleteMany(findDeletedBuildingsQuery),
+      this.readingModel.deleteMany({
+        building: { $in: buildingsIds },
+      }),
+    ]);
   }
 }

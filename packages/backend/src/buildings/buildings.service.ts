@@ -8,14 +8,15 @@ import { Building, BuildingDocument } from './building.schema';
 import { FilterQuery, isValidObjectId, Model } from 'mongoose';
 import { UpsertBuildingDto } from './dtos/upsert-building.dto';
 import { UserDocument } from 'src/users/user.schema';
-import { PaginationDto } from 'src/util/dtos/pagination.dto';
 import { BuildingsFilterDto } from './dtos/buildings-filter.dto';
 import { cleanRegex } from 'src/util/functions/cleanRegex';
+import { Reading } from 'src/readings/reading.schema';
 
 @Injectable()
 export class BuildingsService {
   public constructor(
     @InjectModel(Building.name) private readonly buildingModel: Model<Building>,
+    @InjectModel(Reading.name) private readonly readingModel: Model<Reading>,
   ) {}
 
   public async create(
@@ -79,7 +80,6 @@ export class BuildingsService {
       isDeleted: false,
     };
 
-    console.log(searchTerm);
     if (searchTerm) {
       query.name = {
         $regex: cleanRegex(searchTerm),
@@ -135,6 +135,10 @@ export class BuildingsService {
     });
 
     if (!deletedBuilding) throw new NotFoundException('Building not found');
+
+    await this.readingModel.deleteMany({
+      building: deletedBuilding._id,
+    });
 
     return deletedBuilding;
   }
