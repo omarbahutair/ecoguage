@@ -3,7 +3,7 @@ import Input from './Input';
 import Spinner from './Spinner';
 import Message, { MessageState } from './Message';
 
-interface FormType {
+export interface FormType {
   year: number;
   month: number;
   energyUsage: number;
@@ -118,12 +118,6 @@ export default function UpsertReadingForm({
           setValue={(value) =>
             setForm((prev) => ({ ...prev, energyUsage: parseInt(value) }))
           }
-          onBlur={() => {
-            setForm((prev) => ({
-              ...prev,
-              energyUsage: 0,
-            }));
-          }}
           label="Energy Usage (kWh)"
           error={errors.energyUsage}
         />
@@ -133,12 +127,6 @@ export default function UpsertReadingForm({
           setValue={(value) =>
             setForm((prev) => ({ ...prev, energyCost: parseInt(value) }))
           }
-          onBlur={() => {
-            setForm((prev) => ({
-              ...prev,
-              energyCost: 0,
-            }));
-          }}
           label="Energy Cost (AED)"
           error={errors.energyCost}
         />
