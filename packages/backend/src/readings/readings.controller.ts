@@ -1,12 +1,22 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ReadingsService } from './readings.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserDocument } from 'src/users/user.schema';
-import { UpsertReadingDto } from './dtos/upsert-reading.dto';
+import { CreateReadingDto } from './dtos/create-reading.dto';
 import { FilterReadingsDto } from './dtos/filter-readings.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ReadingDto } from './dtos/reading.dto';
+import { UpdateReadingDto } from './dtos/update-reading.dto';
 
 @Controller('readings')
 @Serialize(ReadingDto)
@@ -16,7 +26,7 @@ export class ReadingsController {
 
   @Post()
   public create(
-    @Body() createReading: UpsertReadingDto,
+    @Body() createReading: CreateReadingDto,
     @CurrentUser() user: UserDocument,
   ) {
     return this.readingsServices.create(createReading, user);
@@ -28,5 +38,14 @@ export class ReadingsController {
     @CurrentUser() user: UserDocument,
   ) {
     return this.readingsServices.find(filter, user);
+  }
+
+  @Put(':id')
+  public update(
+    @Param('id') id: string,
+    @Body() updateReading: UpdateReadingDto,
+    @CurrentUser() user: UserDocument,
+  ) {
+    return this.readingsServices.update(id, updateReading, user);
   }
 }

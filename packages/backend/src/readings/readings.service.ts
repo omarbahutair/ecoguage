@@ -1,17 +1,17 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import {
-  MAX_MONTH,
-  MIN_MONTH,
-  Reading,
-  ReadingDocument,
-} from './reading.schema';
-import { FilterQuery, Model, Types } from 'mongoose';
-import { UpsertReadingDto } from './dtos/upsert-reading.dto';
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Reading, ReadingDocument } from './reading.schema';
+import { FilterQuery, isValidObjectId, Model, Types } from 'mongoose';
+import { CreateReadingDto } from './dtos/create-reading.dto';
 import { UserDocument } from 'src/users/user.schema';
 import { BuildingsService } from 'src/buildings/buildings.service';
 import { FilterReadingsDto } from './dtos/filter-readings.dto';
 import { Building, BuildingDocument } from 'src/buildings/building.schema';
+import { UpdateReadingDto } from './dtos/update-reading.dto';
 
 @Injectable()
 export class ReadingsService {
@@ -24,7 +24,7 @@ export class ReadingsService {
   ) {}
 
   public async create(
-    createReading: UpsertReadingDto,
+    createReading: CreateReadingDto,
     user: UserDocument,
   ): Promise<ReadingDocument> {
     // validate and authorize building
@@ -103,5 +103,44 @@ export class ReadingsService {
       .find(query)
       .populate('building')
       .sort({ year: 1, month: 1 });
+  }
+
+  public async update(
+    id: string,
+    updateReading: UpdateReadingDto,
+    user: UserDocument,
+  ): Promise<ReadingDocument> {
+    if (!isValidObjectId(id))
+      throw new BadRequestException('Invalid reading ID');
+
+    const oldReading = await this.readingModel.findById(id);
+
+    if (!oldReading) throw new NotFoundException('Reading not found');
+
+    // authorize user's access to building
+    await this.buildingsService.findOne(oldReading.building.toString(), user);
+
+    // check for repeated year, month, and building
+    const doesReadingExist = await this.readingModel.findOne({
+      _id: { $ne: oldReading._id },
+      year: updateReading.year,
+      month: updateReading.month,
+      building: oldReading.building,
+    });
+
+    if (doesReadingExist)
+      throw new BadRequestException(
+        'A reading for this year and month already exists. Please modify or delete the existing entry',
+      );
+
+    const updatedReading = await this.readingModel.findByIdAndUpdate(
+      id,
+      updateReading,
+      { new: true },
+    );
+
+    if (!updatedReading) throw new NotFoundException('Reading not found');
+
+    return updatedReading;
   }
 }

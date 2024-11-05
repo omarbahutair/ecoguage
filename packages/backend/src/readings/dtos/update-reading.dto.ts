@@ -10,7 +10,7 @@ import {
   MIN_YEAR,
 } from '../reading.schema';
 
-export class UpsertReadingDto {
+export class UpdateReadingDto {
   @IsInt({ message: 'Invalid year' })
   @Min(MIN_YEAR, { message: `Year must be greater than ${MIN_YEAR}` })
   @Max(MAX_YEAR, { message: `Year must be less than ${MAX_YEAR}` })
@@ -38,7 +38,4 @@ export class UpsertReadingDto {
     message: `Energy cost must be less than ${MAX_ENERGY_COST}`,
   })
   public energyCost: number;
-
-  @IsMongoId({ message: 'Invalid building' })
-  public building: string;
 }
