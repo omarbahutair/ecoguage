@@ -52,3 +52,7 @@ Content-Type: application/json
   "energyUsage": 200,
   "energyCost": 1500
 }
+
+### Delete reading
+DELETE {{url}}/readings/6727aa88849eab60967ca0bb
+Authorization: {{invalidAuth}}

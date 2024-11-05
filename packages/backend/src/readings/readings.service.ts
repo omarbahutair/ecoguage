@@ -143,4 +143,34 @@ export class ReadingsService {
 
     return updatedReading;
   }
+
+  public async delete(
+    id: string,
+    user: UserDocument,
+  ): Promise<ReadingDocument> {
+    if (!isValidObjectId(id))
+      throw new BadRequestException('Invalid reading ID');
+
+    const session = await this.readingModel.startSession();
+
+    session.startTransaction();
+
+    const oldReading = await this.readingModel.findByIdAndDelete(id, {
+      session,
+    });
+
+    if (!oldReading) throw new NotFoundException('Reading not found');
+
+    try {
+      // authorize user's access to building
+      await this.buildingsService.findOne(oldReading.building.toString(), user);
+
+      await session.commitTransaction();
+
+      return oldReading;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    }
+  }
 }

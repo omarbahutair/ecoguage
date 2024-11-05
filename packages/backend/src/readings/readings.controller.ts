@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -47,5 +48,10 @@ export class ReadingsController {
     @CurrentUser() user: UserDocument,
   ) {
     return this.readingsServices.update(id, updateReading, user);
+  }
+
+  @Delete(':id')
+  public delete(@Param('id') id: string, @CurrentUser() user: UserDocument) {
+    return this.readingsServices.delete(id, user);
   }
 }
