@@ -102,7 +102,7 @@ export class ReadingsService {
     return this.readingModel
       .find(query)
       .populate('building')
-      .sort({ year: 1, month: 1 });
+      .sort({ year: -1, month: -1 });
   }
 
   public async update(
