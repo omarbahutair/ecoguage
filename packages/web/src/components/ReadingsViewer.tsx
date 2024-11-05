@@ -5,6 +5,7 @@ import Table from './Table';
 import Modal from './Modal';
 import UpsertReadingForm, { ErrorsType, FormType } from './UpsertReadingForm';
 import { MessageState } from './Message';
+import DeleteForm from './DeleteForm';
 
 interface ReadingsViewerProps {
   buildings: string[];
@@ -177,6 +178,29 @@ export default function ReadingsViewer({ buildings }: ReadingsViewerProps) {
                 setMessage(updatedMessage);
                 setErrors(updatedErrors);
               }
+            }}
+          />
+        )}
+      </Modal>
+      <Modal
+        isOpen={modals.delete}
+        onClose={() => {
+          setSelectedReading(null);
+          setModals((prev) => ({ ...prev, delete: false }));
+        }}
+      >
+        {selectedReading && (
+          <DeleteForm
+            deletePath={`/readings/${selectedReading.id}`}
+            title="DELETE READING?"
+            onCancel={() => {
+              setSelectedReading(null);
+              setModals((prev) => ({ ...prev, delete: false }));
+            }}
+            onSucess={() => {
+              setSelectedReading(null);
+              setModals((prev) => ({ ...prev, delete: false }));
+              fetchReadings();
             }}
           />
         )}
