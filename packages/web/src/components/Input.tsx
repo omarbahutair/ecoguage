@@ -1,13 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, InputHTMLAttributes } from 'react';
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   value: string;
   setValue: (value: string) => void;
-  className?: string;
   error?: string;
   label?: string;
-  placeholder?: string;
-  type?: 'text' | 'password' | 'number';
 }
 
 export default function Input({
@@ -18,6 +15,7 @@ export default function Input({
   label,
   placeholder,
   type = 'text',
+  ...rest
 }: InputProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -45,6 +43,7 @@ export default function Input({
           }}
           placeholder={placeholder}
           type={getType()}
+          {...rest}
         />
         {type === 'password' ? (
           <button

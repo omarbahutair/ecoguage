@@ -1,14 +1,18 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import Spinner from '../components/Spinner';
 import { apiClient } from '../util/apiClient';
 import LinkSequence from '../components/LinkSequence';
 import Modal from '../components/Modal';
+import DeleteForm from '../components/DeleteForm';
+import ReadingsViewer from '../components/ReadingsViewer';
+import UpsertReadingForm, {
+  ErrorsType as ReadingErrorsType,
+} from '../components/UpsertReadingForm';
+import { MessageState } from '../components/Message';
 import UpsertBuildingForm, {
   ErrorsType,
 } from '../components/UpsertBuildingForm';
-import DeleteForm from '../components/DeleteForm';
-import ReadingsViewer from '../components/ReadingsViewer';
 
 export default function Building() {
   const { id } = useParams();
@@ -19,10 +23,11 @@ export default function Building() {
   const [modals, setModals] = useState({
     edit: false,
     delete: false,
+    createReading: false,
   });
 
   // to avoid ReadingsViewer rerendering every rerender
-  const buildingsProp = useMemo(() => (id ? [id] : []), [id]);
+  const [buildingsProp, setBuildingsProp] = useState(id ? [id] : []);
 
   const fetchBuilding = useCallback(
     async (controller?: AbortController) => {
@@ -122,7 +127,12 @@ export default function Building() {
           </div>
         </header>
         <main className="flex-1 flex flex-col gap-4">
-          <button className="bg-primary-fade text-white py-3 px-5 w-full flex gap-3 items-center justify-center rounded sm:w-fit sm:ml-auto">
+          <button
+            onClick={() => {
+              setModals((prev) => ({ ...prev, createReading: true }));
+            }}
+            className="bg-primary-fade text-white py-3 px-5 w-full flex gap-3 items-center justify-center rounded sm:w-fit sm:ml-auto"
+          >
             <i className="fa-solid fa-plus" />
             ADD READING
           </button>
@@ -182,6 +192,57 @@ export default function Building() {
             }}
             onSucess={() => {
               navigate('/dashboard');
+            }}
+          />
+        </Modal>
+        <Modal
+          onClose={() => {
+            setModals((prev) => ({ ...prev, createReading: false }));
+          }}
+          isOpen={modals.createReading}
+        >
+          <UpsertReadingForm
+            title="CREATE READING"
+            onCancel={() => {
+              setModals((prev) => ({ ...prev, createReading: false }));
+            }}
+            onSubmit={async (form, setIsLoading, setErrors, setMessage) => {
+              const updatedErrors: ReadingErrorsType = {};
+              let updatedMessage: MessageState = {
+                content: '',
+                type: null,
+              };
+
+              try {
+                setIsLoading(true);
+
+                await apiClient.post('readings', { ...form, building: id });
+
+                setModals((prev) => ({ ...prev, createReading: false }));
+                setBuildingsProp((prev) => [...prev]);
+              } catch (error: any) {
+                switch (error.response?.status) {
+                  case 422:
+                    updatedErrors.energyCost =
+                      error.response.data.validationErrors.energyCost?.[0];
+                    updatedErrors.energyUsage =
+                      error.response.data.validationErrors.energyUsage?.[0];
+                    updatedErrors.month =
+                      error.response.data.validationErrors.month?.[0];
+                    updatedErrors.year =
+                      error.response.data.validationErrors.year?.[0];
+                    break;
+                  default:
+                    updatedMessage = {
+                      type: 'error',
+                      content: error.response?.data?.message ?? error.message,
+                    };
+                }
+              } finally {
+                setIsLoading(false);
+                setMessage(updatedMessage);
+                setErrors(updatedErrors);
+              }
             }}
           />
         </Modal>
