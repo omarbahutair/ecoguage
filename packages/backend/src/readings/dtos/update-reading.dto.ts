@@ -1,4 +1,4 @@
-import { IsInt, IsMongoId, Max, Min } from 'class-validator';
+import { IsInt, IsMongoId, IsNumber, Max, Min } from 'class-validator';
 import {
   MAX_ENERGY_COST,
   MAX_ENERGY_USAGE,
@@ -21,7 +21,7 @@ export class UpdateReadingDto {
   @Max(MAX_MONTH, { message: `Month must be less than ${MAX_MONTH}` })
   public month: number;
 
-  @IsInt({ message: 'Invalid energy usage' })
+  @IsNumber({}, { message: 'Invalid energy usage' })
   @Min(MIN_ENERGY_USAGE, {
     message: `Energy usage must be greater than ${MIN_ENERGY_USAGE}`,
   })
@@ -30,7 +30,7 @@ export class UpdateReadingDto {
   })
   public energyUsage: number;
 
-  @IsInt({ message: 'Invalid energy cost' })
+  @IsNumber({}, { message: 'Invalid energy cost' })
   @Min(MIN_ENERGY_COST, {
     message: `Energy cost must be greater than ${MIN_ENERGY_COST}`,
   })
