@@ -1,5 +1,6 @@
 @url=http://localhost:5000
 @auth=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NmZjZWQ1M2ViOWMyNWJiMzliZTczZDgiLCJpYXQiOjE3MzAxODAxOTIsImV4cCI6MTczMjc3MjE5Mn0.pRlWeq7c_OqAMuYqa_zC1oDprHpdU6DUhU7QTwWKufo
+@hackerAuth=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzE3ZTIyZDNkMThhMzU0ZDhmZWQ4MzYiLCJpYXQiOjE3MzA4MjA2ODEsImV4cCI6MTczMzQxMjY4MX0.NUc8uXfyivA_T_iBACbooL2lYnrD5DUpoijEct-8RTU
 
 ### Login
 POST {{url}}/auth/login
@@ -9,6 +10,17 @@ Content-Type: application/json
   "email": "o.bahutair@gmail.com",
   "password": "newPassword123!"
 }
+
+### Login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@email.com",
+  "password": "newPassword123!"
+}
+
+
 
 ### Whoami
 GET {{url}}/auth/whoami
@@ -24,8 +36,8 @@ Content-Type: application/json
 }
 
 ### Update building
-PUT {{url}}/buildings/6718a752c351c3028ad4441b
-Authorization: {{auth}}
+PUT {{url}}/buildings/672a3a6916f967d2d8fb615c
+Authorization: {{hackerAuth}}
 Content-Type: application/json
 
 {

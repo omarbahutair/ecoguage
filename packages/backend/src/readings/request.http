@@ -1,0 +1,58 @@
+@url=http://localhost:5000
+@auth=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NmZjZWQ1M2ViOWMyNWJiMzliZTczZDgiLCJpYXQiOjE3MzA2NTAwNTMsImV4cCI6MTczMzI0MjA1M30.qGvfL3bLfnDWbHtYnGo028M0s2HLxPvHpGafmdmwxIY
+@invalidAuth=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzE3ZTIyZDNkMThhMzU0ZDhmZWQ4MzYiLCJpYXQiOjE3MzA2NTAzODQsImV4cCI6MTczMzI0MjM4NH0.K72Hyh_fHTL-dLB80RP5MRSEof6Un48OIx8hH7iKUhY
+
+### Login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "o.bahutair@gmail.com",
+  "password": "newPassword123!"
+}
+
+### Another login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@email.com",
+  "password": "newPassword123!"
+}
+
+### Get buildings
+GET {{url}}/buildings
+Authorization: {{auth}}
+
+### Create reading
+POST {{url}}/readings
+Authorization: {{auth}}
+Content-Type: application/json
+
+{
+  "building": "6727aa24849eab60967ca071",
+  "year": 2023,
+  "month": 3,
+  "energyUsage": 200,
+  "energyCost": 1500
+}
+
+### Get readings
+GET {{url}}/readings
+Authorization: {{auth}}
+
+### Update readings
+PUT {{url}}/readings/6727aa97849eab60967ca0ce
+Authorization: {{invalidAuth}}
+Content-Type: application/json
+
+{
+  "month": 3,
+  "year": 2021,
+  "energyUsage": 200,
+  "energyCost": 1500
+}
+
+### Delete reading
+DELETE {{url}}/readings/6727aa88849eab60967ca0bb
+Authorization: {{invalidAuth}}
