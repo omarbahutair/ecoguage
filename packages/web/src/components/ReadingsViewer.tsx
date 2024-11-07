@@ -6,6 +6,7 @@ import Modal from './Modal';
 import UpsertReadingForm, { ErrorsType, FormType } from './UpsertReadingForm';
 import { MessageState } from './Message';
 import DeleteForm from './DeleteForm';
+import EnergyChart from './EnergyChart';
 
 interface ReadingsViewerProps {
   buildings: string[];
@@ -70,7 +71,8 @@ export default function ReadingsViewer({ buildings }: ReadingsViewerProps) {
     );
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
+      <EnergyChart readings={readings} />
       <Table
         columns={[
           {
@@ -205,6 +207,6 @@ export default function ReadingsViewer({ buildings }: ReadingsViewerProps) {
           />
         )}
       </Modal>
-    </>
+    </div>
   );
 }

@@ -75,7 +75,7 @@ export default function Building() {
 
   return (
     <div className="overflow-auto w-full p-2">
-      <div className="bg-white shadow w-full p-4 sm:p-8 rounded-lg flex flex-col gap-10">
+      <div className="bg-white shadow w-full p-4 sm:p-8 rounded-lg flex flex-col gap-10 max-w-screen-md m-auto">
         <div className="flex items-center gap-4">
           <button
             onClick={() => {
