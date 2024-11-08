@@ -90,7 +90,7 @@ export default function Register() {
     >
       <div className="overflow-auto h-full w-full flex justify-center">
         <form
-          className="flex flex-col gap-10 w-full h-full max-w-md bg-white bg-opacity-50 backdrop-blur-md px-5 py-8 rounded-xl m-2 shadow"
+          className="flex flex-col gap-10 w-full h-fit max-w-md bg-white bg-opacity-50 backdrop-blur-md px-5 py-8 rounded-xl m-2 shadow"
           onSubmit={(e) => {
             e.preventDefault();
 
