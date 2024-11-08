@@ -16,6 +16,12 @@ export default function SideBar({ className, onLinkClick }: SideBarProps) {
         highlightWhen: ['/dashboard', '/buildings/:id'],
       },
       {
+        label: 'Overview',
+        to: '/overview',
+        icon: 'fa-solid fa-chart-simple',
+        highlightWhen: ['/overview'],
+      },
+      {
         label: 'Trash',
         to: '/trash',
         icon: 'fa-solid fa-trash',

@@ -9,6 +9,8 @@ import DashboardLayout from './layouts/DashboardLayout';
 import Dashboard from './pages/Dashboard';
 import Building from './pages/Building';
 import Trash from './pages/Trash';
+import Overview from './pages/Overview';
+import { Provider } from 'react-redux';
 
 export default function App() {
   useEffect(() => {
@@ -16,17 +18,20 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route element={<DashboardLayout />}>
-          <Route element={<Dashboard />} path="dashboard" />
-          <Route element={<Building />} path="buildings/:id" />
-          <Route element={<Trash />} path="trash" />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route element={<DashboardLayout />}>
+            <Route element={<Dashboard />} path="dashboard" />
+            <Route element={<Building />} path="buildings/:id" />
+            <Route element={<Trash />} path="trash" />
+            <Route element={<Overview />} path="overview" />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
