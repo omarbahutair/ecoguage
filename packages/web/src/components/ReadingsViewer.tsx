@@ -9,7 +9,7 @@ import DeleteForm from './DeleteForm';
 import EnergyChart from './EnergyChart';
 
 interface ReadingsViewerProps {
-  buildings: string[];
+  buildings?: string[];
 }
 
 export default function ReadingsViewer({ buildings }: ReadingsViewerProps) {

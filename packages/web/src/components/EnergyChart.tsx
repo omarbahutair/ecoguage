@@ -47,9 +47,14 @@ export default function EnergyChart({ readings }: EnergyChartProps) {
     let result: (number | undefined)[] = [];
 
     for (let month = 1; month <= 12; month += 1) {
-      const monthData = filteredData.find((d) => d.month === month);
+      const monthData = filteredData.filter((d) => d.month === month);
 
-      result.push(monthData?.energyCost);
+      if (monthData.length === 0) {
+        result.push(undefined);
+        continue;
+      }
+
+      result.push(monthData.reduce((a, c) => a + c.energyCost, 0));
     }
 
     return result;
@@ -60,9 +65,14 @@ export default function EnergyChart({ readings }: EnergyChartProps) {
     let result: (number | undefined)[] = [];
 
     for (let month = 1; month <= 12; month += 1) {
-      const monthData = filteredData.find((d) => d.month === month);
+      const monthData = filteredData.filter((d) => d.month === month);
 
-      result.push(monthData?.energyUsage);
+      if (monthData.length === 0) {
+        result.push(undefined);
+        continue;
+      }
+
+      result.push(monthData.reduce((a, c) => a + c.energyUsage, 0));
     }
 
     return result;
