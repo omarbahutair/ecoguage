@@ -10,9 +10,13 @@ import EnergyChart from './EnergyChart';
 
 interface ReadingsViewerProps {
   buildings?: string[];
+  showBuildingName?: boolean;
 }
 
-export default function ReadingsViewer({ buildings }: ReadingsViewerProps) {
+export default function ReadingsViewer({
+  buildings,
+  showBuildingName,
+}: ReadingsViewerProps) {
   const [readings, setReadings] = useState<Array<Record<string, any>>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [modals, setModals] = useState({
@@ -75,6 +79,16 @@ export default function ReadingsViewer({ buildings }: ReadingsViewerProps) {
       <EnergyChart readings={readings} />
       <Table
         columns={[
+          ...(showBuildingName
+            ? [
+                {
+                  label: 'Building',
+                  render(doc: Record<string, any>) {
+                    return doc.building?.name ?? 'Unknown';
+                  },
+                },
+              ]
+            : []),
           {
             label: 'Time (MM/YY)',
             render(doc) {

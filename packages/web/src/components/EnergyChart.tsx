@@ -79,7 +79,7 @@ export default function EnergyChart({ readings }: EnergyChartProps) {
   }, [readings, year]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-4">
       <Dropdown
         options={years.map((y) => ({ label: y.toString(), value: y }))}
         onSelect={setYear}
@@ -92,7 +92,6 @@ export default function EnergyChart({ readings }: EnergyChartProps) {
           responsive: true,
           spanGaps: true,
         }}
-        className="my-5"
         data={{
           labels: [
             'Jan',
