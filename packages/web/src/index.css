@@ -7,6 +7,18 @@
   font-family: 'Oxanium', 'Montserrat Alternates', sans-serif;
 }
 
-* {
+/* * {
   @apply scrollbar-thin scrollbar-thumb-primary-fade scrollbar-track-transparent;
+} */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-fade;
+  border-radius: 10px;
+  border: 2px white solid;
 }
